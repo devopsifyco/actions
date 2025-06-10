@@ -11,7 +11,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Use DevOpsify Check
+      - name: Check latest version istio
         uses: ./check
         with:
           args: 'version istio'
+
+      - name: Check CVE version postgresql 16.4
+        uses: ./check
+        with:
+          args: 'version postgresql 16.4 --cve'

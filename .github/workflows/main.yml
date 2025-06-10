@@ -1,4 +1,4 @@
-name: Validate DevOpsify Check Action
+name: Validate Check Actions
 on:
   push:
     branches: [ develop ]
@@ -16,20 +16,39 @@ jobs:
         with:
           args: 'help'
 
-      - name: Check latest version istio
-        uses: devopsifyco/actions/check@develop
-        with:
-          args: 'version istio'
+      - name: Check CLI build version
+        run: |
+          ./checkctl --version
+
+      - name: Check latest istio version
+        run: |
+          ./checkctl istio --version
+
+      - name: Check latest version istio --full -o json
+        run: |
+          ./checkctl version istio --full -o json
 
       - name: Check CVEs of version postgresql 16.4
         uses: devopsifyco/actions/check@develop
         with:
           args: 'version postgresql 16.4 --cve'
 
-      - name: Run DevOpsify Check Count Line Of Code
+      - name: Run Check Count Line Of Code
         run: |
           ./checkctl code loc
 
-      - name: Run DevOpsify Check Deps
+      - name: Run Check Deps
         run: |
           ./checkctl code deps .
+
+      - name: Check devopsify.co SSL
+        run: |
+          ./checkctl ssl devopsify.co
+
+      - name: Check running os
+        run: |
+          ./checkctl os
+      
+      - name: Check Speed
+        run: |
+          ./checkctl speed

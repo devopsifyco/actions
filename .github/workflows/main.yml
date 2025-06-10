@@ -17,7 +17,7 @@ jobs:
           args: 'help'
 
       - name: Check latest version istio
-        uses: devopsifyco/actions/check
+        uses: devopsifyco/actions/check@develop
         with:
           args: 'version istio'
 

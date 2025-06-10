@@ -6,7 +6,7 @@ inputs:
     required: true
     default: 'help'
   version:
-    description: 'Version of check-cli to download (e.g., v1.2.3). If not set, downloads latest.'
+    description: 'Version of check-cli to download (e.g., 1.2.3). If not set, downloads latest.'
     required: false
   token:
     description: 'DevOpsify Check token to use for authenticated API requests (optional).'
@@ -27,8 +27,8 @@ runs:
     - name: Run check
       shell: bash
       run: |
-        if [[ -f check-bin.exe ]]; then
-          ./check-bin.exe ${{ inputs.args }}
+        if [[ -f check.exe ]]; then
+          ./check.exe ${{ inputs.args }}
         else
-          ./check-bin ${{ inputs.args }}
+          ./check ${{ inputs.args }}
         fi 

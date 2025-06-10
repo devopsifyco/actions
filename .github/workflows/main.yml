@@ -11,12 +11,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Check CLI version
+      - name: Check help
+        uses: ./checks
+        with:
+          args: 'help'
+
+      - name: Check latest version istio
         uses: devopsifyco/actions/check@develop
         with:
           args: 'version istio'
 
-      - name: Check CVE version postgresql 16.4
-        uses: ./check
+      - name: Check CVEs of version postgresql 16.4
+        uses: devopsifyco/actions/check@develop
         with:
           args: 'version postgresql 16.4 --cve'
+
+      - name: Run DevOpsify Check CLI
+        run: |
+          ./check version istio 1.9 --cve

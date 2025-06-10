@@ -1,5 +1,5 @@
-# If check-bin.exe already exists, skip download
-if (Test-Path "check-bin.exe") {
+# If check.exe already exists, skip download
+if (Test-Path "check.exe") {
   Write-Host "check binary already exists, skipping download."
   exit 0
 }
@@ -16,4 +16,4 @@ if (-not $downloadUrl) {
   Write-Error "Could not find download URL for $asset"
   exit 1
 }
-Invoke-WebRequest -Uri $downloadUrl -OutFile "check-bin.exe" 
+Invoke-WebRequest -Uri $downloadUrl -OutFile "check.exe" 

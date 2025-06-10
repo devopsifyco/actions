@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
-# If check-bin already exists, skip download
-if [[ -f check-bin ]]; then
+# If check already exists, skip download
+if [[ -f check ]]; then
   echo "check binary already exists, skipping download."
   exit 0
 fi
@@ -39,5 +39,5 @@ if [[ -z "$LATEST_URL" ]]; then
 fi
 echo "Downloading $LATEST_URL"
 curl -L "$LATEST_URL" -o check-download
-mv check-download check-bin
-chmod +x check-bin 
+mv check-download check
+chmod +x check 

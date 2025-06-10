@@ -1,0 +1,34 @@
+name: 'DevOpsify Check'
+description: 'Download and run the latest check-cli tool.'
+inputs:
+  args:
+    description: 'Arguments to pass to check-cli'
+    required: true
+    default: 'help'
+  version:
+    description: 'Version of check-cli to download (e.g., 1.2.3). If not set, downloads latest.'
+    required: false
+  token:
+    description: 'DevOpsify Check token to use for authenticated API requests (optional).'
+    required: false
+runs:
+  using: 'composite'
+  steps:
+    - name: Download check binary (Linux/macOS)
+      if: runner.os != 'Windows'
+      shell: bash
+      run: |
+        bash "${{ github.action_path }}/download-check.sh" "${{ inputs.version }}"
+    - name: Download check binary (Windows)
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run: |
+        & "${{ github.action_path }}\download-check.ps1" "${{ inputs.version }}"
+    - name: Run check
+      shell: bash
+      run: |
+        if [[ -f checkctl.exe ]]; then
+          ./checkctl.exe ${{ inputs.args }}
+        else
+          ./checkctl ${{ inputs.args }}
+        fi 

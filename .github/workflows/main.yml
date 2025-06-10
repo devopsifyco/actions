@@ -1,0 +1,54 @@
+name: Validate Check Actions
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  check-action-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Check help
+        uses: ./check
+        with:
+          args: 'help'
+
+      - name: Check CLI build version
+        run: |
+          ./checkctl --version
+
+      - name: Check latest istio version
+        run: |
+          ./checkctl version istio --version
+
+      - name: Check latest version istio --full -o json
+        run: |
+          ./checkctl version istio --full -o json
+
+      - name: Check CVEs of version postgresql 16.4
+        uses: devopsifyco/actions/check@master
+        with:
+          args: 'version postgresql 16.4 --cve'
+
+      - name: Run Check Count Line Of Code
+        run: |
+          ./checkctl code loc
+
+      - name: Run Check Deps
+        run: |
+          ./checkctl code deps .
+
+      - name: Check devopsify.co SSL
+        run: |
+          ./checkctl ssl devopsify.co
+
+      - name: Check running os
+        run: |
+          ./checkctl os
+      
+      - name: Check Speed
+        run: |
+          ./checkctl speed

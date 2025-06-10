@@ -28,7 +28,15 @@ else
   RELEASE_URL="https://api.github.com/repos/devopsifyco/check-cli/releases/latest"
 fi
 
-LATEST_URL=$(curl -sL "$RELEASE_URL" | grep browser_download_url | grep "$ASSET" | cut -d '"' -f 4)
+echo "Release URL: $RELEASE_URL"
+RELEASE_RESPONSE=$(curl -sL "$RELEASE_URL")
+LATEST_URL=$(echo "$RELEASE_RESPONSE" | grep browser_download_url | grep "$ASSET" | cut -d '"' -f 4)
+if [[ -z "$LATEST_URL" ]]; then
+  echo "Could not find a download URL for asset: $ASSET"
+  echo "Full release response:"
+  echo "$RELEASE_RESPONSE"
+  exit 1
+fi
 echo "Downloading $LATEST_URL"
 curl -L "$LATEST_URL" -o check-download
 mv check-download check-bin

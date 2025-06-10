@@ -22,7 +22,7 @@ jobs:
 
       - name: Check latest istio version
         run: |
-          ./checkctl istio --version
+          ./checkctl version istio --version
 
       - name: Check latest version istio --full -o json
         run: |

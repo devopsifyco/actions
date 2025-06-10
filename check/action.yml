@@ -8,12 +8,19 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Download latest check-cli release
+    - name: Ensure check-cli is present
       shell: bash
       run: |
         set -e
-        # Remove any existing file or directory named check or check.exe
-        rm -rf check check.exe check-download
+        # If check or check.exe already exists, skip download
+        if [[ -f check || -f check.exe ]]; then
+          echo "check executable already exists, skipping download."
+          exit 0
+        fi
+
+        # Remove any existing download temp file
+        rm -f check-download
+
         OS=$(uname -s)
         ARCH=$(uname -m)
         if [[ "$OS" == "Linux" && "$ARCH" == "x86_64" ]]; then

@@ -28,10 +28,10 @@ jobs:
         run: |
           ./checkctl version istio --full -o json
 
-      - name: Check CVEs of version postgresql 16.4
+      - name: Check CVEs of version istio 1.9
         uses: devopsifyco/actions/check@master
         with:
-          args: 'version postgresql 16.4 --cve'
+          args: 'version istio 1.9 --cve'
 
       - name: Run Check Count Line Of Code
         run: |

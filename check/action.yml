@@ -8,13 +8,13 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Ensure check-cli is present
+    - name: Ensure check binary is present
       shell: bash
       run: |
         set -e
-        # If check or check.exe already exists, skip download
-        if [[ -f check || -f check.exe ]]; then
-          echo "check executable already exists, skipping download."
+        # If check-bin or check-bin.exe already exists, skip download
+        if [[ -f check-bin || -f check-bin.exe ]]; then
+          echo "check binary already exists, skipping download."
           exit 0
         fi
 
@@ -43,16 +43,16 @@ runs:
         curl -L "$LATEST_URL" -o check-download
 
         if [[ "$ASSET" == "check.exe" ]]; then
-          mv check-download check.exe
+          mv check-download check-bin.exe
         else
-          mv check-download check
-          chmod +x check
+          mv check-download check-bin
+          chmod +x check-bin
         fi
     - name: Run check
       shell: bash
       run: |
-        if [[ -f check.exe ]]; then
-          ./check.exe ${{ inputs.args }}
+        if [[ -f check-bin.exe ]]; then
+          ./check-bin.exe ${{ inputs.args }}
         else
-          ./check ${{ inputs.args }}
+          ./check-bin ${{ inputs.args }}
         fi 

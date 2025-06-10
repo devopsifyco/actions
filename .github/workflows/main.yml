@@ -10,5 +10,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
       - name: Use DevOpsify Check
-        uses: ./check 
+        uses: ./check

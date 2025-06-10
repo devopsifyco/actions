@@ -7,6 +7,8 @@ runs:
       shell: bash
       run: |
         set -e
+        # Remove any existing file or directory named check or check.exe
+        rm -rf check check.exe check-download
         OS=$(uname -s)
         ARCH=$(uname -m)
         if [[ "$OS" == "Linux" && "$ARCH" == "x86_64" ]]; then

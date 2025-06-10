@@ -14,58 +14,20 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Ensure check binary is present
+    - name: Download check binary (Linux/macOS)
+      if: runner.os != 'Windows'
       shell: bash
       run: |
-        set -e
-        # If check-bin or check-bin.exe already exists, skip download
-        if [[ -f check-bin || -f check-bin.exe ]]; then
-          echo "check binary already exists, skipping download."
-          exit 0
-        fi
-
-        # Remove any existing download temp file
-        rm -f check-download
-
-        OS=$(uname -s)
-        ARCH=$(uname -m)
-        if [[ "$OS" == "Linux" && "$ARCH" == "x86_64" ]]; then
-          ASSET="check-linux-amd64"
-        elif [[ "$OS" == "Linux" && "$ARCH" == "aarch64" ]]; then
-          ASSET="check-linux-arm64"
-        elif [[ "$OS" == "Darwin" && "$ARCH" == "x86_64" ]]; then
-          ASSET="check-macos-intel"
-        elif [[ "$OS" == "Darwin" && "$ARCH" == "arm64" ]]; then
-          ASSET="check-macos-arm64"
-        elif [[ "$OS" == MINGW* || "$OS" == CYGWIN* || "$OS" == MSYS* ]]; then
-          ASSET="check.exe"
-        else
-          echo "Unsupported OS/ARCH: $OS/$ARCH"
-          exit 1
-        fi
-
-        VERSION="${{ inputs.version }}"
-        if [[ -n "$VERSION" ]]; then
-          RELEASE_URL="https://api.github.com/repos/devopsifyco/check-cli/releases/tags/$VERSION"
-        else
-          RELEASE_URL="https://api.github.com/repos/devopsifyco/check-cli/releases/latest"
-        fi
-
-        LATEST_URL=$(curl -sL "$RELEASE_URL" | grep browser_download_url | grep "$ASSET" | cut -d '"' -f 4)
-        echo "Downloading $LATEST_URL"
-        curl -L "$LATEST_URL" -o check-download
-
-        if [[ "$ASSET" == "check.exe" ]]; then
-          mv check-download check-bin.exe
-        else
-          mv check-download check-bin
-          chmod +x check-bin
-        fi
+        bash "${{ github.action_path }}/download-check.sh" "${{ inputs.version }}"
+    - name: Download check binary (Windows)
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run: |
+        & "${{ github.action_path }}\download-check.ps1" "${{ inputs.version }}"
     - name: Run check
       shell: bash
       run: |
         if [[ -f check-bin.exe ]]; then
           ./check-bin.exe ${{ inputs.args }}
         else
-          ./check-bin ${{ inputs.args }}
-        fi 
+          ./check-bin ${{ inputs.args }} 

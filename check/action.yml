@@ -30,4 +30,5 @@ runs:
         if [[ -f check-bin.exe ]]; then
           ./check-bin.exe ${{ inputs.args }}
         else
-          ./check-bin ${{ inputs.args }} 
+          ./check-bin ${{ inputs.args }}
+        fi 

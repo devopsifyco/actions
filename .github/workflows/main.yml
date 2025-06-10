@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Check CLI version
-        uses: ./check
+        uses: devopsifyco/actions/check@develop
         with:
           args: 'version istio'
 

@@ -1,0 +1,26 @@
+name: 'DevOpsify Check'
+description: 'Download and run the latest check-cli tool.'
+runs:
+  using: 'composite'
+  steps:
+    - name: Download latest check-cli release
+      shell: bash
+      run: |
+        set -e
+        LATEST_URL=$(curl -sL https://api.github.com/repos/devopsifyco/check-cli/releases/latest | grep browser_download_url | grep -E 'check-cli(-windows)?' | cut -d '"' -f 4)
+        echo "Downloading $LATEST_URL"
+        curl -L "$LATEST_URL" -o check-download
+        if [[ "$(uname -s)" == "MINGW"* || "$(uname -s)" == "CYGWIN"* || "$(uname -s)" == "MSYS"* ]]; then
+          mv check-download check.exe
+        else
+          mv check-download check
+          chmod +x check
+        fi
+    - name: Run check help
+      shell: bash
+      run: |
+        if [[ -f check.exe ]]; then
+          ./check.exe help
+        else
+          ./check help
+        fi 

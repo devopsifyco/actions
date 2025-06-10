@@ -17,7 +17,7 @@ jobs:
           args: 'help'
 
       - name: Check latest version istio
-        uses: devopsifyco/actions/check@develop
+        uses: devopsifyco/actions/check
         with:
           args: 'version istio'
 
@@ -26,6 +26,10 @@ jobs:
         with:
           args: 'version postgresql 16.4 --cve'
 
-      - name: Run DevOpsify Check CLI
+      - name: Run DevOpsify Check Count Line Of Code
         run: |
-          ./checkctl version istio 1.9 --cve
+          ./checkctl code loc
+
+      - name: Run DevOpsify Check Deps
+        run: |
+          ./checkctl code deps .

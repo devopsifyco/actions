@@ -1,5 +1,10 @@
 name: 'DevOpsify Check'
 description: 'Download and run the latest check-cli tool.'
+inputs:
+  args:
+    description: 'Arguments to pass to check-cli'
+    required: true
+    default: 'help'
 runs:
   using: 'composite'
   steps:
@@ -36,11 +41,11 @@ runs:
           mv check-download check
           chmod +x check
         fi
-    - name: Run check help
+    - name: Run check
       shell: bash
       run: |
         if [[ -f check.exe ]]; then
-          ./check.exe help
+          ./check.exe ${{ inputs.args }}
         else
-          ./check help
+          ./check ${{ inputs.args }}
         fi 

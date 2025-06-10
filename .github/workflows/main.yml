@@ -13,3 +13,5 @@ jobs:
 
       - name: Use DevOpsify Check
         uses: ./check
+        with:
+          args: 'version istio'

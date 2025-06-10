@@ -5,6 +5,9 @@ inputs:
     description: 'Arguments to pass to check-cli'
     required: true
     default: 'help'
+  version:
+    description: 'Version of check-cli to download (e.g., v1.2.3). If not set, downloads latest.'
+    required: false
 runs:
   using: 'composite'
   steps:
@@ -38,7 +41,14 @@ runs:
           exit 1
         fi
 
-        LATEST_URL=$(curl -sL https://api.github.com/repos/devopsifyco/check-cli/releases/latest | grep browser_download_url | grep "$ASSET" | cut -d '"' -f 4)
+        VERSION="${{ inputs.version }}"
+        if [[ -n "$VERSION" ]]; then
+          RELEASE_URL="https://api.github.com/repos/devopsifyco/check-cli/releases/tags/$VERSION"
+        else
+          RELEASE_URL="https://api.github.com/repos/devopsifyco/check-cli/releases/latest"
+        fi
+
+        LATEST_URL=$(curl -sL "$RELEASE_URL" | grep browser_download_url | grep "$ASSET" | cut -d '"' -f 4)
         echo "Downloading $LATEST_URL"
         curl -L "$LATEST_URL" -o check-download
 

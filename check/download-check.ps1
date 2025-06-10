@@ -1,9 +1,9 @@
 # If check.exe already exists, skip download
-if (Test-Path "check.exe") {
+if (Test-Path "checkctl.exe") {
   Write-Host "check binary already exists, skipping download."
   exit 0
 }
-$asset = "check.exe"
+$asset = "checkctl.exe"
 $version = $args[0]
 if ($version) {
   $releaseUrl = "https://api.github.com/repos/devopsifyco/check-cli/releases/tags/$version"
@@ -16,4 +16,4 @@ if (-not $downloadUrl) {
   Write-Error "Could not find download URL for $asset"
   exit 1
 }
-Invoke-WebRequest -Uri $downloadUrl -OutFile "check.exe" 
+Invoke-WebRequest -Uri $downloadUrl -OutFile "checkctl.exe" 

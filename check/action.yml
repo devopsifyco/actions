@@ -27,8 +27,8 @@ runs:
     - name: Run check
       shell: bash
       run: |
-        if [[ -f check.exe ]]; then
-          ./check.exe ${{ inputs.args }}
+        if [[ -f checkctl.exe ]]; then
+          ./checkctl.exe ${{ inputs.args }}
         else
-          ./check ${{ inputs.args }}
+          ./checkctl ${{ inputs.args }}
         fi 

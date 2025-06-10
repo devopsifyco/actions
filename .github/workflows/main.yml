@@ -28,4 +28,4 @@ jobs:
 
       - name: Run DevOpsify Check CLI
         run: |
-          ./check version istio 1.9 --cve
+          ./checkctl version istio 1.9 --cve
